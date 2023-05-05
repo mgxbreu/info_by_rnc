@@ -17,7 +17,7 @@ async def main():
     rnc_list = extract_rncs_from_csv("data/rn.csv")
 
     rnc = "1-32-42125-6"
-    print(rnc)
+
     entry_box = await page.querySelector(RNC_INPUT)
 
     await entry_box.type(rnc)
@@ -33,7 +33,6 @@ async def main():
     estado = await page.evaluate(STATUS_VALUE)
 
     actividad_economica = await page.evaluate(ECONOMIC_ACTIVITY_VALUE)
-    # print(nombre_comercial, regimen_pago, estado, actividad_economica)
 
     actividad_economica = unidecode.unidecode(actividad_economica)
 
@@ -45,24 +44,11 @@ async def main():
         "actividad_economica": actividad_economica
     }
 
-    # headers = "rnc,nombre_comercial,regimen_pago,estado,actividad_economica \n"
-
-    # csvfile = open("rnc.csv", "w")
-
     print(extracted_data)
     write_row(extracted_data, CSV_HEADERS)
 
-    # csvfile.write(headers)
-    # csvfile.write(rnc + "," + nombre_comercial + ", " + regimen_pago + ", " + estado + ", " + actividad_economica + "\n")
-
-    #     Rnc
-    # 1-32-42125-6
-    # 1-31-75529-1
-
-    # await page.screenshot({"path": "python.png"})
-
-    # await browser.close()
+    await browser.close()
 
 print("Starting...")
 asyncio.get_event_loop().run_until_complete(main())
-print("Screenshot has been taken")
+print("Done ✅")
