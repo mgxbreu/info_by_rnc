@@ -9,7 +9,16 @@ def extract_rncs_from_csv(path):
         header = next(datareader)
         if header != None:
             for row in datareader:
-                print(row)
                 rnc_list.append(row)
 
     return rnc_list
+
+
+def write_row(row, headers):
+    with open('data.csv', 'a') as f:
+        writer = csv.DictWriter(f, fieldnames=headers)
+
+        if f.tell() == 0:
+            writer.writeheader()
+
+        writer.writerow(row)

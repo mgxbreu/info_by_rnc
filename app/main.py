@@ -2,8 +2,8 @@ import asyncio
 import unidecode
 from pyppeteer import launch, errors
 import csv
-from utils.constants import DGII_URL, RNC_INPUT, TRADE_NAME_VALUE, PAYMENT_REGIME_VALUE, STATUS_VALUE, ECONOMIC_ACTIVITY_VALUE, SEARCH_BUTTON
-from utils.csv import extract_rncs_from_csv
+from utils.constants import CSV_HEADERS, DGII_URL, RNC_INPUT, TRADE_NAME_VALUE, PAYMENT_REGIME_VALUE, STATUS_VALUE, ECONOMIC_ACTIVITY_VALUE, SEARCH_BUTTON
+from utils.csv import extract_rncs_from_csv, write_row
 from classes.browser_navigation import BrowserNavigation
 
 
@@ -15,15 +15,6 @@ async def main():
     page = browser_navigation.page
 
     rnc_list = extract_rncs_from_csv("data/rn.csv")
-    # rnc_list = []
-
-    # with open("data/rn.csv", 'r') as csvfile:
-    #     datareader = csv.reader(csvfile)
-    #     header = next(datareader)
-    #     if header != None:
-    #         for row in datareader:
-    #             print(row)
-    #             rnc_list.append(row)
 
     rnc = "1-32-42125-6"
     print(rnc)
@@ -46,11 +37,20 @@ async def main():
 
     actividad_economica = unidecode.unidecode(actividad_economica)
 
+    extracted_data = {
+        "rnc": rnc,
+        "nombre_comercial": nombre_comercial,
+        "regimen_pago": regimen_pago,
+        "estado": estado,
+        "actividad_economica": actividad_economica
+    }
+
     # headers = "rnc,nombre_comercial,regimen_pago,estado,actividad_economica \n"
 
     # csvfile = open("rnc.csv", "w")
 
-    print(rnc_list)
+    print(extracted_data)
+    write_row(extracted_data, CSV_HEADERS)
 
     # csvfile.write(headers)
     # csvfile.write(rnc + "," + nombre_comercial + ", " + regimen_pago + ", " + estado + ", " + actividad_economica + "\n")
