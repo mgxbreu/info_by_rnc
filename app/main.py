@@ -1,13 +1,19 @@
 import asyncio
 import unidecode
-from pyppeteer import launch
+from pyppeteer import launch, errors
 import csv
 from utils.constants import DGII_URL, RNC_INPUT, TRADE_NAME_VALUE, PAYMENT_REGIME_VALUE, STATUS_VALUE, ECONOMIC_ACTIVITY_VALUE, SEARCH_BUTTON
+from classes.browser_navigation import BrowserNavigation
 
 
 async def main():
-    browser = await launch({"headless": False, "args": ["--start-maximized", "--no-sandbox"]})
-    page = await browser.newPage()
+    browser_navigation = BrowserNavigation()
+    await browser_navigation.setup_browser()
+    await browser_navigation.open_new_page()
+    await browser_navigation.goto(DGII_URL)
+    page = browser_navigation.page
+    # browser = await launch({"headless": False, "args": ["--start-maximized", "--no-sandbox"]})
+    # page = await browser.newPage()
 
     rnc_list = []
     print("hi")
@@ -19,12 +25,6 @@ async def main():
             for row in datareader:
                 print(row)
                 rnc_list.append(row)
-    while True:
-        try:
-            await page.goto(DGII_URL)
-            break
-        except pyppeteer.errors.TimeoutError as e:
-            continue
 
     rnc = "1-32-42125-6"
     print(rnc)
