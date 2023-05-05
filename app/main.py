@@ -3,6 +3,7 @@ import unidecode
 from pyppeteer import launch, errors
 import csv
 from utils.constants import DGII_URL, RNC_INPUT, TRADE_NAME_VALUE, PAYMENT_REGIME_VALUE, STATUS_VALUE, ECONOMIC_ACTIVITY_VALUE, SEARCH_BUTTON
+from utils.csv import extract_rncs_from_csv
 from classes.browser_navigation import BrowserNavigation
 
 
@@ -12,19 +13,17 @@ async def main():
     await browser_navigation.open_new_page()
     await browser_navigation.goto(DGII_URL)
     page = browser_navigation.page
-    # browser = await launch({"headless": False, "args": ["--start-maximized", "--no-sandbox"]})
-    # page = await browser.newPage()
 
-    rnc_list = []
-    print("hi")
+    rnc_list = extract_rncs_from_csv("data/rn.csv")
+    # rnc_list = []
 
-    with open("data/rn.csv", 'r') as csvfile:
-        datareader = csv.reader(csvfile)
-        header = next(datareader)
-        if header != None:
-            for row in datareader:
-                print(row)
-                rnc_list.append(row)
+    # with open("data/rn.csv", 'r') as csvfile:
+    #     datareader = csv.reader(csvfile)
+    #     header = next(datareader)
+    #     if header != None:
+    #         for row in datareader:
+    #             print(row)
+    #             rnc_list.append(row)
 
     rnc = "1-32-42125-6"
     print(rnc)
