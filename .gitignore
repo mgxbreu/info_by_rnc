@@ -2,3 +2,6 @@
 rnc.csv
 rn.csv
 python.png
+.venv
+.vscode
+__pycache__
